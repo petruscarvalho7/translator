@@ -3,6 +3,7 @@ import {
   TRANSLATED,
   DESTINY_LANGUAGE,
   SOURCE_LANGUAGE,
+  HISTORIC_LIST,
 } from '../types';
 
 const INITIAL_STATE = {
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
   translatedText: '',
   destinyLanguage: 'pt-PT',
   sourceLanguage: 'en-US',
+  historicList: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -33,6 +35,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         sourceLanguage: action.payload,
+      };
+    case HISTORIC_LIST:
+      return {
+        ...state,
+        historicList: action.payload,
       };
     default:
       return state;

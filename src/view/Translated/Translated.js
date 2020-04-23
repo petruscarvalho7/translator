@@ -14,7 +14,13 @@ class Translated extends Component {
       <View>
         <HeaderBar
           title={'Translated'}
-          popAction={() => this.props.navigation.navigate('Translator')}
+          popAction={() =>
+            this.props.navigation.getParam('pop')
+              ? this.props.navigation.navigate(
+                  this.props.navigation.getParam('pop'),
+                )
+              : this.props.navigation.navigate('Translator')
+          }
         />
         <Text> {this.props.translatedText} </Text>
       </View>

@@ -23,9 +23,13 @@ export const updateSourceLanguage = input => ({
   payload: input,
 });
 
+export const setTranslatedValues = translated => ({
+  type: TRANSLATED,
+  payload: translated,
+});
+
 export const getHistoricTranslated = () => async (dispatch, getState) => {
   const historicTranslateds = await getData();
-  console.log(historicTranslateds);
   dispatch({
     type: HISTORIC_LIST,
     payload: historicTranslateds,
@@ -38,7 +42,6 @@ export const translate = () => async (dispatch, getState) => {
 
   const translated = await translatorText(translateText, language);
   await setTranslated(translateText, translated, language);
-  console.log(translated);
   dispatch({
     type: TRANSLATED,
     payload: translated,

@@ -82,18 +82,24 @@ class Translator extends Component {
   };
 
   toTranslate = async () => {
-    this.setState({loading: true});
-    Keyboard.dismiss();
-    await this.props.translate();
-    await this.props.getHistoricTranslated();
-    this.setState({loading: false});
-    this.props.updateTranslateText('');
-    this.props.navigation.navigate('Translated');
+    if (this.props.translateText) {
+      this.setState({loading: true});
+      Keyboard.dismiss();
+      await this.props.translate();
+      this.setState({loading: false});
+      this.props.updateTranslateText('');
+      this.props.navigation.navigate('Translated', {
+        pop: 'Translator',
+      });
+    } else {
+      alert('Text is required!');
+    }
   };
 
   toHistoricTranslated = async () => {
     this.setState({loading: true});
-    //
+    await this.props.getHistoricTranslated();
+    this.props.navigation.navigate('HistoricTranslated');
     this.setState({loading: false});
   };
 
