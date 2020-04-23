@@ -1,0 +1,1 @@
+export const HISTORIC_LIST = 'HISTORIC_LIST';

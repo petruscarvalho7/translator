@@ -3,8 +3,10 @@ import {
   TRANSLATED,
   DESTINY_LANGUAGE,
   SOURCE_LANGUAGE,
+  HISTORIC_LIST,
 } from '../types';
 import {translatorText} from '../../services/TranslateService';
+import {setTranslated, getData} from '../../services/HistoricTranslatedService';
 
 export const updateTranslateText = input => ({
   type: TRANSLATE,
@@ -21,11 +23,21 @@ export const updateSourceLanguage = input => ({
   payload: input,
 });
 
+export const getHistoricTranslated = () => async (dispatch, getState) => {
+  const historicTranslateds = await getData();
+  console.log(historicTranslateds);
+  dispatch({
+    type: HISTORIC_LIST,
+    payload: historicTranslateds,
+  });
+};
+
 export const translate = () => async (dispatch, getState) => {
   const translateText = getState().translateReducer.translateText;
   const language = getState().translateReducer.destinyLanguage;
 
   const translated = await translatorText(translateText, language);
+  await setTranslated(translateText, translated, language);
   console.log(translated);
   dispatch({
     type: TRANSLATED,

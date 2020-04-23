@@ -31,8 +31,10 @@ class ListenBar extends Component {
             }
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => false} style={styles.closeBtn}>
-          <Icon name="camera" size={25} color={theme.colors.black} />
+        <TouchableOpacity
+          onPress={() => this.props.toHistoricTranslated()}
+          style={styles.closeBtn}>
+          <Icon name="history" size={25} color={theme.colors.black} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.toTranslate()}

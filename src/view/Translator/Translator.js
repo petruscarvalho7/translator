@@ -5,6 +5,7 @@ import {
   updateDestinyLanguage,
   updateSourceLanguage,
   translate,
+  getHistoricTranslated,
 } from '../../core/redux/actions/translateActions';
 import {View, TextInput, Keyboard} from 'react-native';
 import Voice from '@react-native-community/voice';
@@ -84,9 +85,16 @@ class Translator extends Component {
     this.setState({loading: true});
     Keyboard.dismiss();
     await this.props.translate();
+    await this.props.getHistoricTranslated();
     this.setState({loading: false});
     this.props.updateTranslateText('');
     this.props.navigation.navigate('Translated');
+  };
+
+  toHistoricTranslated = async () => {
+    this.setState({loading: true});
+    //
+    this.setState({loading: false});
   };
 
   render() {
@@ -120,6 +128,7 @@ class Translator extends Component {
           <ListenBar
             actionListen={() => this.actionListen()}
             toTranslate={() => this.toTranslate()}
+            toHistoricTranslated={() => this.toHistoricTranslated()}
           />
         </View>
       </View>
@@ -140,5 +149,6 @@ export default connect(
     updateDestinyLanguage,
     updateSourceLanguage,
     translate,
+    getHistoricTranslated,
   },
 )(Translator);
