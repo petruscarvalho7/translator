@@ -62,13 +62,16 @@ class Translator extends Component {
 
   actionListen = async () => {
     this.setState({textInputEnabled: !this.state.textInputEnabled});
+    //on speech
     if (this.state.textInputEnabled) {
       try {
         await Voice.start(this.props.sourceLanguage);
       } catch (e) {
         console.error(e);
       }
-    } else {
+    }
+    //off speech
+    else {
       try {
         await Voice.destroy();
       } catch (e) {
