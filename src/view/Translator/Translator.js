@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {
   updateTranslateText,
-  updateLanguageDestiny,
+  updateDestinyLanguage,
+  updateSourceLanguage,
   translate,
 } from '../../core/redux/actions/translateActions';
 import {View, TextInput, Keyboard} from 'react-native';
+import Voice from '@react-native-community/voice';
 import styles from './TranslatorStyles';
 import {
   HeaderSelectLanguage,
@@ -19,14 +21,60 @@ class Translator extends Component {
     super(props);
     this.state = {
       textInputEnabled: true,
-      sourceSelect: 'ENGLISH',
-      targetSelect: 'PORTUGUESE',
       loading: false,
+      end: '',
+      started: '',
+      results: [],
     };
+    Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
+    Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
+    Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
   }
 
-  actionListen = () => {
+  componentWillUnmount() {
+    //destroy the process after switching the screen
+    Voice.destroy().then(Voice.removeAllListeners);
+  }
+
+  onSpeechStartHandler = e => {
+    //Invoked when .start() is called without error
+    this.setState({
+      started: '√',
+    });
+  };
+
+  onSpeechEndHandler = e => {
+    //Invoked when SpeechRecognizer stops recognition
+    console.log('onSpeechEndHandler: ', e);
+    this.setState({
+      end: '√',
+    });
+  };
+
+  onSpeechResultsHandler = e => {
+    //Invoked when SpeechRecognizer is finished recognizing
+    console.log('onSpeechResultsHandler: ', e);
+    this.setState({
+      results: e.value,
+    });
+    this.props.updateTranslateText(e.value[0]);
+  };
+
+  actionListen = async () => {
     this.setState({textInputEnabled: !this.state.textInputEnabled});
+    if (this.state.textInputEnabled) {
+      try {
+        await Voice.start(this.props.sourceLanguage);
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        await Voice.destroy();
+      } catch (e) {
+        console.error(e);
+      }
+    }
   };
 
   toTranslate = async () => {
@@ -34,6 +82,7 @@ class Translator extends Component {
     Keyboard.dismiss();
     await this.props.translate();
     this.setState({loading: false});
+    this.props.updateTranslateText('');
     this.props.navigation.navigate('Translated');
   };
 
@@ -42,14 +91,14 @@ class Translator extends Component {
       <View style={styles.mainView}>
         <ModalLoading visible={this.state.loading} />
         <HeaderSelectLanguage
-          sourceSelected={this.state.sourceSelect}
-          sourceSelect={value => this.setState({sourceSelect: value})}
-          targetSelected={this.props.languageDestiny}
-          targetSelect={value => this.props.updateLanguageDestiny(value)}
+          sourceSelected={this.props.sourceLanguage}
+          sourceSelect={value => this.props.updateSourceLanguage(value)}
+          targetSelected={this.props.destinyLanguage}
+          targetSelect={value => this.props.updateDestinyLanguage(value)}
         />
         <View style={styles.writeView}>
           <SpeakBar
-            targetSelect={this.state.targetSelect}
+            targetSelect={this.props.destinyLanguage}
             actionSpeak={() => false}
             actionClose={() => this.props.updateTranslateText('')}
           />
@@ -77,14 +126,16 @@ class Translator extends Component {
 
 const mapStateToProps = state => ({
   translateText: state.translateReducer.translateText,
-  languageDestiny: state.translateReducer.languageDestiny,
+  destinyLanguage: state.translateReducer.destinyLanguage,
+  sourceLanguage: state.translateReducer.sourceLanguage,
 });
 
 export default connect(
   mapStateToProps,
   {
     updateTranslateText,
-    updateLanguageDestiny,
+    updateDestinyLanguage,
+    updateSourceLanguage,
     translate,
   },
 )(Translator);

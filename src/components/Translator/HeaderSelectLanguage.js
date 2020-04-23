@@ -13,8 +13,8 @@ class HeaderSelectLanguage extends Component {
           <RNPickerSelect
             onValueChange={value => this.props.sourceSelect(value)}
             items={[
-              {label: 'English', value: 'ENGLISH'},
-              {label: 'Portuguese', value: 'PORTUGUESE'},
+              {label: 'English', value: 'en-US'},
+              {label: 'Portuguese', value: 'pt-PT'},
             ]}
             value={this.props.sourceSelected}
             placeholder={{label: 'Select Language', value: ''}}
@@ -25,8 +25,8 @@ class HeaderSelectLanguage extends Component {
           <RNPickerSelect
             onValueChange={value => this.props.targetSelect(value)}
             items={[
-              {label: 'English', value: 'ENGLISH'},
-              {label: 'Portuguese', value: 'PORTUGUESE'},
+              {label: 'English', value: 'en-US'},
+              {label: 'Portuguese', value: 'pt-PT'},
             ]}
             value={this.props.targetSelected}
             placeholder={{label: 'Select Language', value: ''}}

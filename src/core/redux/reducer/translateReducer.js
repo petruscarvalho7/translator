@@ -1,9 +1,15 @@
-import {TRANSLATE, TRANSLATED, LANGUAGE} from '../types';
+import {
+  TRANSLATE,
+  TRANSLATED,
+  DESTINY_LANGUAGE,
+  SOURCE_LANGUAGE,
+} from '../types';
 
 const INITIAL_STATE = {
   translateText: '',
   translatedText: '',
-  languageDestiny: 'PORTUGUESE',
+  destinyLanguage: 'pt-PT',
+  sourceLanguage: 'en-US',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,10 +24,15 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         translatedText: action.payload,
       };
-    case LANGUAGE:
+    case DESTINY_LANGUAGE:
       return {
         ...state,
-        languageDestiny: action.payload,
+        destinyLanguage: action.payload,
+      };
+    case SOURCE_LANGUAGE:
+      return {
+        ...state,
+        sourceLanguage: action.payload,
       };
     default:
       return state;

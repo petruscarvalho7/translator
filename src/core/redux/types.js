@@ -1,3 +1,4 @@
 export const TRANSLATE = 'TRANSLATE';
 export const TRANSLATED = 'TRANSLATED';
-export const LANGUAGE = 'LANGUAGE';
+export const DESTINY_LANGUAGE = 'DESTINY_LANGUAGE';
+export const SOURCE_LANGUAGE = 'SOURCE_LANGUAGE';

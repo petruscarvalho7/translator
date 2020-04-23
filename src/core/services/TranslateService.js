@@ -10,10 +10,10 @@ TranslatorConfiguration.setConfig(ProviderTypes.Google, API_KEY, 'pt');
 
 export const translatorText = async (text, language) => {
   switch (language) {
-    case 'ENGLISH':
+    case 'en-US':
       TranslatorConfiguration.setConfig(ProviderTypes.Google, API_KEY, 'en');
       break;
-    case 'PORTUGUESE':
+    case 'pt-PT':
       TranslatorConfiguration.setConfig(ProviderTypes.Google, API_KEY, 'pt');
       break;
   }

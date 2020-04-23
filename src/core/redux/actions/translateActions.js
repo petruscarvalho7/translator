@@ -1,4 +1,9 @@
-import {TRANSLATE, TRANSLATED, LANGUAGE} from '../types';
+import {
+  TRANSLATE,
+  TRANSLATED,
+  DESTINY_LANGUAGE,
+  SOURCE_LANGUAGE,
+} from '../types';
 import {translatorText} from '../../services/TranslateService';
 
 export const updateTranslateText = input => ({
@@ -6,14 +11,19 @@ export const updateTranslateText = input => ({
   payload: input,
 });
 
-export const updateLanguageDestiny = input => ({
-  type: LANGUAGE,
+export const updateDestinyLanguage = input => ({
+  type: DESTINY_LANGUAGE,
+  payload: input,
+});
+
+export const updateSourceLanguage = input => ({
+  type: SOURCE_LANGUAGE,
   payload: input,
 });
 
 export const translate = () => async (dispatch, getState) => {
   const translateText = getState().translateReducer.translateText;
-  const language = getState().translateReducer.languageDestiny;
+  const language = getState().translateReducer.destinyLanguage;
 
   const translated = await translatorText(translateText, language);
   console.log(translated);
